@@ -55,8 +55,6 @@ It spins up a web service that uses `keep_alive` to keep the thread active.
   _To be implemented soon!_
 - **Ban List Info** ❌  
   _To be implemented soon!_
-- **** ❌  
-  _To be implemented soon!_
-- 
+
   
  
