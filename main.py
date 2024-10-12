@@ -20,6 +20,7 @@ allow_ping_role = config['BotSettings']['Allow_Ping_Role']
 blacklisted_words = config['BotSettings']['BlackListedWords']
 ARDatabase = config['Database']['DBName']
 welcome_channel = config['BotSettings']['Welcome_Channel']
+discord_hook = config['BotSettings']['DISCORD_HOOK']
 # Discord Token
 DISCORD_TOKEN = os.environ['DISCORD_TOKEN']
 
@@ -53,7 +54,7 @@ class Client(commands.Bot):
         print(f"Total users across all guilds: {user_count}")
 
         await self.change_presence(
-            activity=discord.Game(name="Playing a game"),
+            activity=discord.Game(name="Playing World of Warcraft"),
             status=discord.Status.online
 
         )
