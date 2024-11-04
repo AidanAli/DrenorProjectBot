@@ -17,18 +17,26 @@ class vehicleApplication(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-        # Create separate tables if they don't exist
+        # Updated tables with server_name column
         cursor.execute('''CREATE TABLE IF NOT EXISTS iron_clad_users (
-                            user_id INTEGER PRIMARY KEY
+                            user_id INTEGER,
+                            server_name TEXT,
+                            PRIMARY KEY (user_id, server_name)
                         )''')
         cursor.execute('''CREATE TABLE IF NOT EXISTS wheeled_mortar_users (
-                            user_id INTEGER PRIMARY KEY
+                            user_id INTEGER,
+                            server_name TEXT,
+                            PRIMARY KEY (user_id, server_name)
                         )''')
         cursor.execute('''CREATE TABLE IF NOT EXISTS speedster_cars_users (
-                            user_id INTEGER PRIMARY KEY
+                            user_id INTEGER,
+                            server_name TEXT,
+                            PRIMARY KEY (user_id, server_name)
                         )''')
         cursor.execute('''CREATE TABLE IF NOT EXISTS strada_users (
-                            user_id INTEGER PRIMARY KEY
+                            user_id INTEGER,
+                            server_name TEXT,
+                            PRIMARY KEY (user_id, server_name)
                         )''')
         conn.commit()
 
@@ -59,23 +67,33 @@ class VehicleButtons(discord.ui.View):
     def __init__(self):
         super().__init__(timeout=None)
 
-    # Database Check
-    def check_user_in_database(self, user_id, table_name):
-        cursor.execute(f"SELECT user_id FROM {table_name} WHERE user_id =?", (user_id,))
+    # Updated database check to include server name
+    def check_user_in_database(self, user_id, server_name, table_name):
+        cursor.execute(f"SELECT user_id FROM {table_name} WHERE user_id = ? AND server_name = ?",
+                      (user_id, server_name))
         return cursor.fetchone() is not None
 
-    # Button CallBack
+    # Updated button callback to include server name
     async def handle_button_click(self, interaction, button_label, table_name):
         errorIco = '<:icon_x:1238013626883899402>'
         user_id = interaction.user.id
-        if self.check_user_in_database(user_id, table_name):
-            await interaction.response.send_message(f"{errorIco} You have already applied for {button_label}.",
-                                                    ephemeral=True)
+        server_name = interaction.user.display_name
+
+        if self.check_user_in_database(user_id, server_name, table_name):
+            await interaction.response.send_message(
+                f"{errorIco} You have already applied for {button_label}{server_name}.",
+                ephemeral=True
+            )
         else:
-            cursor.execute(f"INSERT INTO {table_name} (user_id) VALUES (?)", (user_id,))
+            cursor.execute(
+                f"INSERT INTO {table_name} (user_id, server_name) VALUES (?, ?)",
+                (user_id, server_name)
+            )
             conn.commit()
-            await interaction.response.send_message(f"✅You have successfully applied for {button_label}.",
-                                                    ephemeral=True)
+            await interaction.response.send_message(
+                f"✅You have successfully applied for {button_label} {server_name}.",
+                ephemeral=True
+            )
 
     @discord.ui.button(label="Iron Clad", custom_id="ironcladBtn", style=discord.ButtonStyle.blurple)
     async def iron_clad_btn(self, interaction, button):

@@ -81,7 +81,7 @@ class MemberLogger(commands.Cog):
 
     @app_commands.command(name="reset-join-leave-log-channel",
                           description="Resets the log channel for member join and leave events")
-    async def reset_log_channel(self, ctx: discord.Interaction, channel_name: discord.TextChannel):
+    async def reset_log_channel(self, ctx: discord.Interaction):
         try:
             guild = ctx.guild
             member = guild.get_member(ctx.user.id)

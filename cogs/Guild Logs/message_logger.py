@@ -4,12 +4,8 @@ from discord import app_commands
 from discord.ext import commands
 import sqlite3
 from datetime import datetime
-from main import guild_id, ARDatabase
-from configparser import ConfigParser
-config = ConfigParser()
-config.read('config.ini')
 
-DatabaseFile = config['Database']['DBName']
+from main import ARDatabase, guild_id
 
 
 class MessageLogger(commands.Cog):
@@ -69,7 +65,7 @@ class MessageLogger(commands.Cog):
 
     @app_commands.command(name="reset-message-log", description="Resets the log channel for message logs")
     @commands.has_permissions(administrator=True)
-    async def reset_log_channel(self, ctx: discord.Interaction, channel_name: discord.TextChannel):
+    async def reset_log_channel(self, ctx: discord.Interaction):
         try:
             guild = ctx.guild
             member = guild.get_member(ctx.user.id)
