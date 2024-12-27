@@ -1,4 +1,4 @@
-# Welcome to the Drenor Projects Discord Bot
+# Welcome to the Echoes of Azeroth Discord Bot
 
 I've created a Discord bot that is integrated into the server and website itself.  
 Feel free to look over my project and ask any questions!
