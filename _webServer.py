@@ -1,6 +1,7 @@
-from flask import Flask
+from fastapi import FastAPI
 from threading import Thread
 from configparser import ConfigParser
+import uvicorn
 
 config = ConfigParser()
 config.read('config.ini')
@@ -8,17 +9,15 @@ config.read('config.ini')
 # Config.ini WebServerSettings
 host = config["WebServerSettings"]['host']
 
-app = Flask('')
+app = FastAPI()
 
-
-@app.route('/')
-def home():
-    return "ArcheRage Events Bot 🟢"
-
+@app.get("/")
+async def home():
+    return {"message": "ArcheRage Events Bot 🟢"}
 
 def run():
-    app.run(host=host, port=8080)
 
+    uvicorn.run(app, host=host, port=8080)
 
 def keep_alive():
     t = Thread(target=run)

@@ -22,7 +22,7 @@ class AzerothCore(commands.Cog):
         # Construct the GM command
         REGISTER_USER = f'account create {username} {password}'
 
-        # SOAP Request XML
+        # Request XML
         xml_request = f"""
         <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:urn="urn:AC">
            <soapenv:Header/>
